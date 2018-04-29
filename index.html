@@ -21,9 +21,12 @@
             let load = () => {
                 $('#welcome-message').html('идет загрузка данных ...');
 
-                $.get("http://localhost:8080/welcome", (data) => {
-                    $('#welcome-message').html(data);
-                });
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', 'http://memory-game.task:8080/welcome', true);
+                xhr.onreadystatechange = function() {
+                    $('#welcome-message').html(xhr.responseText);
+                }
+                xhr.send(null);
             };
         </script>
 
