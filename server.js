@@ -63,9 +63,8 @@ app.get('/level', (req, res) => {
         if(error) throw error;
         
         let level = result[0].level;
-        if(!level) {
-            level = 1;
-        }
+        if(!level) level = 1;
+        if(level == 16) level = 15;
         let data = game.getGameData(level + 1);
 
         //Засекаем время
