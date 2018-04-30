@@ -80,6 +80,13 @@ body .form-control {
   right: 5px;
 }
 
+#top-menu .clean {
+  cursor: pointer;
+  position: absolute;
+  top: 5px;
+  right: 105px;
+}
+
 #playing-field {
   margin: 20px 0 40px;
   display: block;

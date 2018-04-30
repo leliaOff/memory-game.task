@@ -1916,6 +1916,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2006,12 +2007,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 // ...
             });
         },
-        logout: function logout() {
+        clean: function clean() {
             var _this3 = this;
+
+            axios.get('clean').then(function (response) {
+
+                _this3.getLevel();
+            }).catch(function (error) {
+                // ...
+            });
+        },
+        logout: function logout() {
+            var _this4 = this;
 
             axios.get('logout').then(function (response) {
 
-                _this3.$emit('onLogout');
+                _this4.$emit('onLogout');
             }).catch(function (error) {
                 // ...
             });
@@ -19720,6 +19731,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "id": "top-menu"
     }
   }, [_c('h3', [_vm._v("Добро пожаловать, " + _vm._s(_vm.username))]), _vm._v(" "), _c('h3', [_vm._v("Уровень " + _vm._s(_vm.level))]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-outline-light clean",
+    attrs: {
+      "type": "submit"
+    },
+    on: {
+      "click": _vm.clean
+    }
+  }, [_vm._v("Начать с начала")]), _vm._v(" "), _c('button', {
     staticClass: "btn btn-outline-light logout",
     attrs: {
       "type": "submit"

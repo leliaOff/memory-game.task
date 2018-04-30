@@ -4,6 +4,7 @@
         <div id="top-menu" :class="'back-' + level">
             <h3>Добро пожаловать, {{ username }}</h3>
             <h3>Уровень {{ level }}</h3>
+            <button type="submit" class="btn btn-outline-light clean" @click="clean">Начать с начала</button>
             <button type="submit" class="btn btn-outline-light logout" @click="logout">Закончить</button>
         </div>
 
@@ -116,6 +117,18 @@
 
                 axios.get(`save?level=${this.level}&attempts=${this.attempts}`).then(response => {     
                     // ...
+                }).catch(error => {
+                    // ...
+                });
+
+            },
+
+            clean() {
+
+                axios.get(`clean`).then(response => {     
+                    
+                    this.getLevel();
+
                 }).catch(error => {
                     // ...
                 });
