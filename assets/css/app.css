@@ -1,0 +1,328 @@
+body {
+  font-family: PTSans, Calibri, Ubuntu, Tahoma, LucidaGrande;
+}
+
+body .alert {
+  border-radius: 2px;
+}
+
+body .alert.alert-light {
+  color: #ffffff;
+  background-color: transparent;
+  border-color: #ffffff;
+}
+
+body .btn {
+  border-radius: 2px;
+}
+
+body .btn.btn-outline-light {
+  color: #ffffff;
+  background-color: transparent;
+  background-image: none;
+  border-color: #ffffff;
+}
+
+body .form-control {
+  border-radius: 2px;
+}
+
+#app {
+  min-height: 100vh;
+  width: 100%;
+}
+
+#app .form {
+  max-width: 400px;
+  margin: 40px auto;
+}
+
+#app .form button {
+  width: 100%;
+}
+
+#app .wrapper {
+  background-attachment: fixed;
+  background-size: cover;
+  min-height: 100vh;
+  padding: 40px 0;
+  width: 100%;
+}
+
+#app .wrapper .content {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+#top-menu {
+  border-bottom: 1px solid #ffffff;
+  background-attachment: fixed;
+  background-size: cover;
+  position: fixed;
+  height: 50px;
+  width: 100%;
+  z-index: 5;
+  left: 0;
+  top: 0;
+}
+
+#top-menu h3 {
+  display: inline-block;
+  font-size: 18px;
+  color: #ffffff;
+  margin: 13px 0 0 40px;
+}
+
+#top-menu .logout {
+  cursor: pointer;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+#playing-field {
+  margin: 20px 0 40px;
+  display: block;
+  width: 100%;
+}
+
+#playing-field .row {
+  text-align: center;
+  display: block;
+  width: 100%;
+  margin: 0;
+}
+
+#playing-field .row .cell {
+  display: inline-block;
+  vertical-align: top;
+  max-width: 150px;
+  padding: 10px;
+  width: 33.33%;
+  height: 200px;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+#playing-field .row .cell .item {
+  background-color: transparent;
+  border: 1px solid #ffffff;
+  position: relative;
+  cursor: pointer;
+  display: none;
+  padding: 10px;
+  height: 100%;
+  width: 100%;
+  z-index: 2;
+  border-radius: 2px;
+}
+
+#playing-field .row .cell.active .item {
+  display: block;
+}
+
+#playing-field .row .cell.active .item:after {
+  background-attachment: fixed;
+  background-size: cover;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  content: "";
+  z-index: 1;
+  left: 0;
+  top: 0;
+  -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -ms-filter: blur(5px);
+  -o-filter: blur(5px);
+  filter: blur(5px);
+}
+
+#playing-field .row .cell.active .item:before {
+  background: #ffffff;
+  position: absolute;
+  height: 100%;
+  opacity: .5;
+  width: 100%;
+  content: "";
+  z-index: 2;
+  left: 0;
+  top: 0;
+  transition: opacity 0.5s ease-out;
+}
+
+#playing-field .row .cell.active .item:hover:before {
+  opacity: .3;
+}
+
+#playing-field .row .cell.active .item .card {
+  background-repeat: no-repeat;
+  background-color: #ffffff;
+  background-position: center;
+  background-size: contain;
+  display: none;
+  border: none;
+  height: 100%;
+  width: 100%;
+  z-index: 3;
+}
+
+#playing-field .row .cell.open .item {
+  background: #ffffff;
+}
+
+#playing-field .row .cell.open .item:after {
+  display: none;
+}
+
+#playing-field .row .cell.open .item:before {
+  display: none;
+}
+
+#playing-field .row .cell.open .item .card {
+  display: block;
+}
+
+.back-1 {
+  background-image: url("http://memory-game.task/assets/images/background/01.jpg");
+}
+
+.back-1:after {
+  background-image: url("http://memory-game.task/assets/images/background/01.jpg");
+}
+
+.back-2 {
+  background-image: url("http://memory-game.task/assets/images/background/02.jpg");
+}
+
+.back-2:after {
+  background-image: url("http://memory-game.task/assets/images/background/02.jpg");
+}
+
+.back-3 {
+  background-image: url("http://memory-game.task/assets/images/background/03.jpg");
+}
+
+.back-3:after {
+  background-image: url("http://memory-game.task/assets/images/background/03.jpg");
+}
+
+.back-4 {
+  background-image: url("http://memory-game.task/assets/images/background/04.jpg");
+}
+
+.back-4:after {
+  background-image: url("http://memory-game.task/assets/images/background/04.jpg");
+}
+
+.back-5 {
+  background-image: url("http://memory-game.task/assets/images/background/05.jpg");
+}
+
+.back-5:after {
+  background-image: url("http://memory-game.task/assets/images/background/05.jpg");
+}
+
+.back-6 {
+  background-image: url("http://memory-game.task/assets/images/background/06.jpg");
+}
+
+.back-6:after {
+  background-image: url("http://memory-game.task/assets/images/background/06.jpg");
+}
+
+.back-7 {
+  background-image: url("http://memory-game.task/assets/images/background/07.jpg");
+}
+
+.back-7:after {
+  background-image: url("http://memory-game.task/assets/images/background/07.jpg");
+}
+
+.back-8 {
+  background-image: url("http://memory-game.task/assets/images/background/08.jpg");
+}
+
+.back-8:after {
+  background-image: url("http://memory-game.task/assets/images/background/08.jpg");
+}
+
+.back-9 {
+  background-image: url("http://memory-game.task/assets/images/background/09.jpg");
+}
+
+.back-9:after {
+  background-image: url("http://memory-game.task/assets/images/background/09.jpg");
+}
+
+.back-10 {
+  background-image: url("http://memory-game.task/assets/images/background/10.jpg");
+}
+
+.back-10:after {
+  background-image: url("http://memory-game.task/assets/images/background/10.jpg");
+}
+
+.back-11 {
+  background-image: url("http://memory-game.task/assets/images/background/11.jpg");
+}
+
+.back-11:after {
+  background-image: url("http://memory-game.task/assets/images/background/11.jpg");
+}
+
+.back-12 {
+  background-image: url("http://memory-game.task/assets/images/background/12.jpg");
+}
+
+.back-12:after {
+  background-image: url("http://memory-game.task/assets/images/background/12.jpg");
+}
+
+.back-13 {
+  background-image: url("http://memory-game.task/assets/images/background/13.jpg");
+}
+
+.back-13:after {
+  background-image: url("http://memory-game.task/assets/images/background/13.jpg");
+}
+
+.back-14 {
+  background-image: url("http://memory-game.task/assets/images/background/14.jpg");
+}
+
+.back-14:after {
+  background-image: url("http://memory-game.task/assets/images/background/14.jpg");
+}
+
+.back-15 {
+  background-image: url("http://memory-game.task/assets/images/background/15.jpg");
+}
+
+.back-15:after {
+  background-image: url("http://memory-game.task/assets/images/background/15.jpg");
+}
+
+.back-16 {
+  background-image: url("http://memory-game.task/assets/images/background/16.jpg");
+}
+
+.back-16:after {
+  background-image: url("http://memory-game.task/assets/images/background/16.jpg");
+}
+
+.card-1 {
+  background-image: url("http://memory-game.task/assets/images/cards/001.png");
+}
+
+.card-2 {
+  background-image: url("http://memory-game.task/assets/images/cards/002.png");
+}
+
+.card-3 {
+  background-image: url("http://memory-game.task/assets/images/cards/003.png");
+}
+
+.card-4 {
+  background-image: url("http://memory-game.task/assets/images/cards/004.png");
+}

@@ -1,0 +1,191 @@
+body {
+    font-family: $font;
+    
+    .alert {
+        @include border-radius($border-radius);
+
+        &.alert-light {
+            color: $white;
+            background-color: transparent;
+            border-color: $white;
+        }
+    }
+
+    .btn {
+        @include border-radius($border-radius);
+
+        &.btn-outline-light {
+            color: $white;
+            background-color: transparent;
+            background-image: none;
+            border-color: $white;
+        }
+    }
+
+    .form-control {
+        @include border-radius($border-radius);
+    }
+}
+
+#app {
+    min-height: 100vh;
+    width: 100%;
+
+    .form {
+        max-width: 400px;
+        margin: 40px auto;
+    
+        button {
+            width: 100%;
+        }
+    }
+
+    .wrapper {
+        background-attachment: fixed;
+        background-size: cover;
+        min-height: 100vh;
+        padding: 40px 0;
+        width: 100%;
+
+        .content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+    }
+}
+
+#top-menu {
+    border-bottom: 1px solid $white;
+    background-attachment: fixed;
+    background-size: cover;
+    position: fixed;
+    height: 50px;
+    width: 100%;
+    z-index: 5;
+    left: 0;
+    top: 0;
+
+    h3 {
+        display: inline-block;
+        font-size: 18px;
+        color: $white;
+        margin: 13px 0 0 40px;
+    }
+
+    .logout {
+        cursor: pointer;
+        position: absolute;
+        top: 5px;
+        right: 5px;
+    }
+}
+
+#playing-field {
+    margin: 20px 0 40px;
+    display: block;
+    width: 100%;
+
+    .row {
+        text-align: center;
+        display: block;
+        width: 100%;
+        margin: 0;
+
+        .cell {
+            display: inline-block;
+            vertical-align: top;
+            max-width: 150px;
+            padding: 10px;
+            width: 33.33%;
+            height: 200px;
+            @include box-sizing(border-box);
+
+            .item {
+                background-color: transparent;
+                border: 1px solid $white;
+                position: relative;
+                cursor: pointer;
+                display: none;
+                padding: 10px;
+                height: 100%;
+                width: 100%;
+                z-index: 2;
+                @include border-radius($border-radius);
+            }
+
+            &.active {
+
+                .item {
+                    display: block;
+        
+                    &:after {
+                        background-attachment: fixed;
+                        background-size: cover;
+                        position: absolute;
+                        height: 100%;
+                        width: 100%;
+                        content: "";
+                        z-index: 1;
+                        left: 0;             
+                        top: 0;     
+                        @include blur(5px);
+                    }
+        
+                    &:before {
+                        background: $white;
+                        position: absolute;
+                        height: 100%;
+                        opacity: .5;
+                        width: 100%;
+                        content: "";
+                        z-index: 2;
+                        left: 0;             
+                        top: 0;
+                        @include transition(opacity .5s ease-out);
+                    }
+        
+                    &:hover {
+                        &:before {
+                            opacity: .3;
+                        }
+                    }
+
+                    .card {
+                        background-repeat: no-repeat;
+                        background-color: #ffffff;
+                        background-position: center;
+                        background-size: contain;
+                        display: none;
+                        border: none;
+                        height: 100%;
+                        width: 100%;
+                        z-index: 3;
+                    }
+
+                }
+
+            }
+
+            &.open {
+
+                .item {
+                    background: $white;
+                    
+                    &:after {
+                        display: none;
+                    }
+        
+                    &:before {
+                        display: none;
+                    }
+
+                    .card {
+                        display: block;
+                    }
+                }
+            }
+        }
+
+    }
+
+}
