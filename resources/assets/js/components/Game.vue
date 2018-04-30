@@ -3,11 +3,14 @@
 
         <div id="top-menu" :class="'back-' + level">
             <h3>Добро пожаловать, {{ username }}</h3>
+            <h3>Уровень {{ level }}</h3>
             <button type="submit" class="btn btn-outline-light logout" @click="logout">Закончить</button>
         </div>
 
         <div class="content">
-            <div id="playing-field">
+
+            <button type="submit" class="btn btn-outline-light btn-block" v-if="left == 0" @click="getLevel">Следующий уровень</button>
+            <div id="playing-field" v-else>
                 <div class="row" v-for="(row, i) in gameData" :key="i">
                     <div v-bind:class="{ cell: true, active: cell.state != -1, open: cell.state == 1 }" v-for="(cell, j) in row" :key="j" :style="'width: ' + (100 / level) + '%'">
                         <div :class="'item back-' + level" @click="openCard(cell)">
@@ -15,7 +18,8 @@
                         </div>
                     </div>
                 </div>
-            </div>            
+            </div>
+
         </div>
     </div>
 </template>
@@ -28,9 +32,12 @@
 
         data() {
             return {
-                gameData    : [],
-                level       : 0,
-                opened      : []
+                gameData    : [],   //данные игры
+                level       : 0,    //номер текущего уровня
+                opened      : [],   //список ссылок на открытые карточки
+                left        : -1,   //сколько ещё осталось открытых карточек
+                attempts    : 0,    //попытки
+                autoClose   : 0,    //состояние для автозакрытия карточек
             }
         },
 
@@ -38,15 +45,26 @@
 
             getLevel() {
 
-                axios.get(`level`).then(response => {     
+                axios.get(`level`).then(response => {
                     
-                    this.gameData = response.data;
-                    this.level = this.gameData.length;
+                    this.start(response.data);
 
                 }).catch(error => {
                     // ...
                 });
 
+            },
+
+            start(data) {
+                
+                if(data == '') {
+                    this.$emit('onLogout');
+                }
+                
+                this.gameData   = data;
+                this.level      = this.gameData.length;
+                this.left       = Math.floor(this.level * this.level / 2);
+                this.attempts   = 0;
             },
 
             openCard(cell) {
@@ -68,20 +86,39 @@
                     return;
                 }
 
+                this.attempts++;
+
                 if(this.opened[0].value != this.opened[1].value) {
-                    setTimeout(() => { this.setStateCards(0) }, 500);
+                    this.autoClose = setTimeout(() => { this.setStateCards(0) }, 500);
                 } else {
                     this.setStateCards(-1);
+                    this.left--;
+                }
+
+                if(this.left == 0) {
+                    this.finish();
                 }
 
             },
 
             setStateCards(state) {
 
+                clearTimeout(this.autoClose);
+
                 for(let i in this.opened) {
                     this.opened[i].state = state;
                 }
                 this.opened = [];
+
+            },
+
+            finish() {
+
+                axios.get(`save?level=${this.level}&attempts=${this.attempts}`).then(response => {     
+                    // ...
+                }).catch(error => {
+                    // ...
+                });
 
             },
 
@@ -94,7 +131,7 @@
                 }).catch(error => {
                     // ...
                 });
-            }
+            },
 
         },
 
