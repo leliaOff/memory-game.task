@@ -1,33 +1,100 @@
 var mysql   = require('mysql');
-var connection = mysql.createConnection({
+
+var connectConfiguration = {
     host     : 'localhost',
     user     : 'memory_game',
     password : 'memory_game',
     database : 'memory_game'
-});
-connection.connect();
+};
+
+/**
+ * Получение результатов из БД
+ * @param {*} query 
+ * @param {*} params 
+ * @param {*} fn 
+ */
+let sqlConnection = (query, params = [], fn) => {        
+    
+    let connection = mysql.createConnection(connectConfiguration);
+    connection.connect();    
+    connection.query(query, params, fn);
+    connection.end();
+    
+};
 
 /**
  * Получить последний пройденный уровень
  * @param {*} username 
  */
-exports.getLevel = (username) => {
+exports.getMaxLevel = (username, callback) => {
+    
+    let query = "SELECT max(level) as level FROM results WHERE username = ?";
 
-    let query = `SELECT max(level) as level FROM results WHERE username = '?'`;
-    let level = 1;
+    let fn = (error, result, fields) => {
+        
+        if(error) {
+            callback(error, null);
+        } else {
+            let level = !result[0].level ? 1 : (result[0].level > 15 ? 15 : result[0].level);
+            callback(null, level);
+        }
 
-    connection.query(query, username, getMaxLevel);
+    };
+
+    sqlConnection(query, [username], fn);
 
 }
 
-let getMaxLevel = (error, result, fields) => {
-        
-    if(error) throw error;
-    
-    if(result[0].level) {
-        return result[0].level;
-    } else {
-        return 1;
-    }
+exports.saveResult = (username, level, timeout, attempts, callback) => {
 
-};
+    let query = "INSERT INTO results (username, level, timeout, attempts) VALUES (?, ?, ?, ?)";
+
+    let fn = (error, result, fields) => {
+
+        if(error) {
+            callback(error, null);
+        } else {
+            callback(null, '');
+        }
+
+    };
+
+    sqlConnection(query, [username, level, timeout, attempts], fn);
+
+}
+
+exports.cleanResult = (username, callback) => {
+
+    let query = "DELETE FROM results WHERE username = ?";
+
+    let fn = (error, result, fields) => {
+
+        if(error) {
+            callback(error, null);
+        } else {
+            callback(null, '');
+        }
+
+    };
+
+    sqlConnection(query, [username], fn);
+
+}
+
+exports.getAllResults = (callback) => {
+
+    let query = "SELECT * FROM results";
+
+    let fn = (error, result, fields) => {
+        
+        if(error) {
+            callback(error, null);
+        } else {
+            callback(null, result);
+        }
+
+    };
+
+    sqlConnection(query, [], fn);
+
+}

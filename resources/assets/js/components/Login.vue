@@ -14,12 +14,19 @@
                 <button type="submit" class="btn btn-primary" @click="login">Начать</button>
             </div>
         </div>
+        <results-table></results-table>
     </div>
 </template>
 
 <script>
 
+    import ResultsTable from './ResultsTable.vue';
+
     export default {
+
+        components: {
+            ResultsTable: ResultsTable,
+        },
 
         data() {
             return {
