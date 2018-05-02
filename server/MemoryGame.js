@@ -7,7 +7,7 @@ class MemoryGame {
     /**
      * Получаем данные для игры
      */
-    static getGameData() {
+    getGameData() {
 
         let data = [];
         let values = this.createDataValues();

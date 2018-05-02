@@ -1,8 +1,10 @@
 var express = require('express');
 var session = require('express-session');
 var mysql   = require('mysql');
-const game  = require('./server/game.js');
-const gameResult  = require('./server/gameResult.js');
+//const game  = require('./server/game.js');
+
+var MemoryGame = require('./server/MemoryGame.js');
+var GameResult  = require('./server/GameResult.js');
 
 var app = express();
 
@@ -48,11 +50,14 @@ app.get('/level', (req, res) => {
         return;
     }
     
+    let gameResult = new GameResult();
     gameResult.getMaxLevel(req.session.username, (error, result) => {
         
         if(error) throw error;
 
-        let data = game.getGameData(result + 1);
+        let game = new MemoryGame(result + 1);
+        let data = game.getGameData();
+
         req.session.tm = Math.floor(new Date() / 1000);
         res.send(JSON.stringify(data));
 
@@ -74,6 +79,7 @@ app.get('/save', (req, res) => {
         parseInt(req.param('attempts'), 10)
     ];
 
+    let gameResult = new GameResult();
     gameResult.saveResult(...data, (error, result) => {        
         if(error) throw error;
         res.send(result);
@@ -88,6 +94,7 @@ app.get('/clean', (req, res) => {
         return;
     }
 
+    let gameResult = new GameResult();
     gameResult.cleanResult(req.session.username, (error, result) => {        
         if(error) throw error;
         res.send(result);
@@ -97,6 +104,7 @@ app.get('/clean', (req, res) => {
 
 app.get('/results', (req, res) => {
     
+    let gameResult = new GameResult();
     gameResult.getAllResults((error, result) => {
         
         if(error) throw error;
