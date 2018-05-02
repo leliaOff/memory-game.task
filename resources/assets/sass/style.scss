@@ -101,11 +101,11 @@ body {
         .cell {
             display: inline-block;
             vertical-align: top;
-            max-width: 150px;
-            padding: 10px;
+            max-width: 150px;            
             width: 33.33%;
-            height: 200px;
+            height: 0px;
             @include box-sizing(border-box);
+            @include transition(all .5s ease-out);
 
             .item {
                 background-color: transparent;
@@ -121,6 +121,9 @@ body {
             }
 
             &.active {
+
+                padding: 10px;
+                height: 200px;
 
                 .item {
                     display: block;
@@ -195,4 +198,29 @@ body {
 
     }
 
+}
+
+#results-points {
+    width: 500px;
+    margin: 40px auto 0;
+    border: 1px solid $black;
+    padding: 20px;
+    @include border-radius($border-radius);
+
+    table {
+        width: 100%;
+
+        td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        .username {
+            width: 80%;
+        }
+
+        .points {
+            width: 20%;
+        }
+    }
 }

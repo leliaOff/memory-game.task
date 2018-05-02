@@ -90,11 +90,52 @@ exports.getAllResults = (callback) => {
         if(error) {
             callback(error, null);
         } else {
-            callback(null, result);
+            callback(null, resultCalculate(result));
         }
 
     };
 
     sqlConnection(query, [], fn);
 
+}
+
+let resultCalculate = (result) => {
+
+    let usersResults = {};
+    for(let i in result) {
+
+        let username = result[i].username;
+        let points = getPoints(result[i].level, result[i].timeout, result[i].attempts);
+
+        if(!usersResults[username]) {
+            usersResults[username] = points;
+        } else {
+            usersResults[username] += points;
+        }
+    }
+
+    return sortResult(usersResults);
+
+}
+
+let getPoints = (level, timeout, attempts) => {
+    level = level % 2 == 0 ? level * level : level * level - 1;
+    let combinations = (level * (level - 1)) / 2;
+    let attemptsPoints = combinations / attempts;
+    let timeoutPoints = combinations / timeout;
+    return Math.round(attemptsPoints * timeoutPoints);
+}
+
+let sortResult = (result) => {
+    
+    let sortable = [];
+    for (let i in result) {
+        sortable.push([i, result[i]]);
+    }
+
+    sortable.sort(function(a, b) {
+        return b[1] - a[1];
+    });
+
+    return sortable;
 }

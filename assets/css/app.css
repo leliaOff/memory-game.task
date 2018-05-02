@@ -104,11 +104,11 @@ body .form-control {
   display: inline-block;
   vertical-align: top;
   max-width: 150px;
-  padding: 10px;
   width: 33.33%;
-  height: 200px;
+  height: 0px;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
+  transition: all 0.5s ease-out;
 }
 
 #playing-field .row .cell .item {
@@ -122,6 +122,11 @@ body .form-control {
   width: 100%;
   z-index: 2;
   border-radius: 2px;
+}
+
+#playing-field .row .cell.active {
+  padding: 10px;
+  height: 200px;
 }
 
 #playing-field .row .cell.active .item {
@@ -188,6 +193,31 @@ body .form-control {
 
 #playing-field .row .cell.open .item .card {
   display: block;
+}
+
+#results-points {
+  width: 500px;
+  margin: 40px auto 0;
+  border: 1px solid #1a181c;
+  padding: 20px;
+  border-radius: 2px;
+}
+
+#results-points table {
+  width: 100%;
+}
+
+#results-points table td {
+  padding: 10px;
+  text-align: left;
+}
+
+#results-points table .username {
+  width: 80%;
+}
+
+#results-points table .points {
+  width: 20%;
 }
 
 .back-1 {

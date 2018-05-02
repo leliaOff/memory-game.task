@@ -100,17 +100,7 @@ app.get('/results', (req, res) => {
     gameResult.getAllResults((error, result) => {
         
         if(error) throw error;
-
-        let usersResults = {};
-        for(let i in result) {
-
-            if(!usersResults[result[i].username]) {
-                usersResults[result[i].username] = [];
-            }
-            usersResults[result[i].username].push(result[i]);
-        }
-
-        res.send(JSON.stringify(usersResults));
+        res.send(JSON.stringify(result));
 
     });
     

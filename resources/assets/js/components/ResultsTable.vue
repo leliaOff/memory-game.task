@@ -1,6 +1,10 @@
 <template>
-    <div>
-        
+    <div id="results-points">
+        <table>
+            <tr v-for="item in results" :key="item[0]">
+                <td>{{ item[0] }}</td><td>{{ item[1] }}</td>
+            </tr>
+        </table>
     </div>
 </template>
 
