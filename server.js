@@ -1,9 +1,8 @@
 var express = require('express');
 var session = require('express-session');
 var mysql   = require('mysql');
-//const game  = require('./server/game.js');
 
-var MemoryGame = require('./server/MemoryGame.js');
+var MemoryGame  = require('./server/MemoryGame.js');
 var GameResult  = require('./server/GameResult.js');
 
 var app = express();
