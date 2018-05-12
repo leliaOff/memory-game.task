@@ -55,7 +55,10 @@ app.get('/level', (req, res) => {
         if(error) throw error;
 
         let game = new MemoryGame(result + 1);
-        let data = game.getGameData();
+        let data = {
+            game: game.getGameData(),
+            level: result + 1
+        };
 
         req.session.tm = Math.floor(new Date() / 1000);
         res.send(JSON.stringify(data));

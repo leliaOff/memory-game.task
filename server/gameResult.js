@@ -3,7 +3,7 @@ var DbHelper = require('./DbHelper.js');
 class GameResult {
 
     constructor() {        
-        this.db = new DbHelper('localhost', 'memory_game', 'memory_game', 'memory_game');
+        this.db = new DbHelper('localhost', 'memory-game', 'memory-game', 'memory-game');
     }
 
     /**

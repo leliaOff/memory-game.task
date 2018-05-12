@@ -1890,6 +1890,8 @@ module.exports = function spread(callback) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__domains_Game__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__domains_CardsCollection__ = __webpack_require__(52);
 //
 //
 //
@@ -1917,6 +1919,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
+
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -1925,12 +1930,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     data: function data() {
         return {
-            gameData: [], //данные игры
             level: 0, //номер текущего уровня
             opened: [], //список ссылок на открытые карточки
-            left: -1, //сколько ещё осталось открытых карточек
             attempts: 0, //попытки
-            autoClose: 0 //состояние для автозакрытия карточек
+            autoClose: 0, //состояние для автозакрытия карточек
+
+            game: false
         };
     },
 
@@ -1941,63 +1946,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             axios.get('level').then(function (response) {
 
-                _this.start(response.data);
+                _this.game = new __WEBPACK_IMPORTED_MODULE_0__domains_Game__["a" /* default */](new __WEBPACK_IMPORTED_MODULE_1__domains_CardsCollection__["a" /* default */](response.data.game));
+                var a = _this.game.getCards();
+
+                _this.level = response.data.level;
+                _this.attempts = 0;
             }).catch(function (error) {
                 // ...
             });
         },
-        start: function start(data) {
+        clickCard: function clickCard(card) {
 
-            if (data == '') {
-                this.$emit('onLogout');
-            }
+            var result = this.game.selectCard(card);
+            this.attempts += result;
 
-            this.gameData = data;
-            this.level = this.gameData.length;
-            this.left = Math.floor(this.level * this.level / 2);
-            this.attempts = 0;
-        },
-        openCard: function openCard(cell) {
-
-            if (this.opened.length == 2) {
-                this.setStateCards(0);
-            }
-
-            cell.state = 1;
-            this.opened.push(cell);
-
-            this.checkCards();
-        },
-        checkCards: function checkCards() {
-            var _this2 = this;
-
-            if (this.opened.length < 2) {
-                return;
-            }
-
-            this.attempts++;
-
-            if (this.opened[0].value != this.opened[1].value) {
-                this.autoClose = setTimeout(function () {
-                    _this2.setStateCards(0);
-                }, 500);
-            } else {
-                this.setStateCards(-1);
-                this.left--;
-            }
-
-            if (this.left == 0) {
+            if (this.game.isFinish()) {
                 this.finish();
             }
-        },
-        setStateCards: function setStateCards(state) {
-
-            clearTimeout(this.autoClose);
-
-            for (var i in this.opened) {
-                this.opened[i].state = state;
-            }
-            this.opened = [];
         },
         finish: function finish() {
 
@@ -2008,21 +1973,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         clean: function clean() {
-            var _this3 = this;
+            var _this2 = this;
 
             axios.get('clean').then(function (response) {
 
-                _this3.getLevel();
+                _this2.getLevel();
             }).catch(function (error) {
                 // ...
             });
         },
         logout: function logout() {
-            var _this4 = this;
+            var _this3 = this;
 
             axios.get('logout').then(function (response) {
 
-                _this4.$emit('onLogout');
+                _this3.$emit('onLogout');
             }).catch(function (error) {
                 // ...
             });
@@ -19599,7 +19564,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "c:\\OpenServer\\domains\\memory-game.task\\resources\\assets\\js\\components\\Game.vue"
+Component.options.__file = "c:\\OSPanel\\domains\\memory-game.task\\resources\\assets\\js\\components\\Game.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Game.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -19633,7 +19598,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "c:\\OpenServer\\domains\\memory-game.task\\resources\\assets\\js\\components\\Login.vue"
+Component.options.__file = "c:\\OSPanel\\domains\\memory-game.task\\resources\\assets\\js\\components\\Login.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Login.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -19667,7 +19632,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "c:\\OpenServer\\domains\\memory-game.task\\resources\\assets\\js\\components\\ResultsTable.vue"
+Component.options.__file = "c:\\OSPanel\\domains\\memory-game.task\\resources\\assets\\js\\components\\ResultsTable.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] ResultsTable.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -19701,7 +19666,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "c:\\OpenServer\\domains\\memory-game.task\\resources\\assets\\js\\components\\Welcome.vue"
+Component.options.__file = "c:\\OSPanel\\domains\\memory-game.task\\resources\\assets\\js\\components\\Welcome.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Welcome.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -19856,9 +19821,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.logout
     }
-  }, [_vm._v("Закончить")])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Закончить")])]), _vm._v(" "), (_vm.game) ? _c('div', {
     staticClass: "content"
-  }, [(_vm.left == 0) ? _c('button', {
+  }, [(_vm.game.isFinish()) ? _c('button', {
     staticClass: "btn btn-outline-light btn-block",
     attrs: {
       "type": "submit"
@@ -19870,29 +19835,26 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "id": "playing-field"
     }
-  }, _vm._l((_vm.gameData), function(row, i) {
+  }, [_c('div', {
+    staticClass: "row"
+  }, _vm._l((_vm.game.getCards()), function(card, i) {
     return _c('div', {
-      key: i,
-      staticClass: "row"
-    }, _vm._l((row), function(cell, j) {
-      return _c('div', {
-        key: j,
-        class: {
-          cell: true, active: cell.state != -1, open: cell.state == 1
-        },
-        style: ('width: ' + (100 / _vm.level) + '%')
-      }, [_c('div', {
-        class: 'item back-' + _vm.level,
-        on: {
-          "click": function($event) {
-            _vm.openCard(cell)
-          }
+      key: card.id,
+      class: {
+        cell: true, active: card.isActive(), open: card.isOpened()
+      },
+      style: ('width: ' + (100 / _vm.level) + '%')
+    }, [_c('div', {
+      class: 'item back-' + _vm.level,
+      on: {
+        "click": function($event) {
+          _vm.clickCard(card)
         }
-      }, [_c('div', {
-        class: 'card card-' + cell.value
-      })])])
-    }))
-  }))])])
+      }
+    }, [_c('div', {
+      class: 'card card-' + card.value
+    })])])
+  }))])]) : _vm._e()])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -30903,6 +30865,201 @@ module.exports = function(module) {
 __webpack_require__(10);
 module.exports = __webpack_require__(11);
 
+
+/***/ }),
+/* 48 */,
+/* 49 */,
+/* 50 */,
+/* 51 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Game = function () {
+    function Game(cardsCollection) {
+        _classCallCheck(this, Game);
+
+        this.cardsCollection = cardsCollection;
+    }
+
+    _createClass(Game, [{
+        key: "getCards",
+        value: function getCards() {
+            return this.cardsCollection.getAll();
+        }
+    }, {
+        key: "selectCard",
+        value: function selectCard(card) {
+
+            if (card.isOpened()) {
+                return;
+            }
+
+            var opened = this.cardsCollection.getOpened();
+            if (opened.length == 2) {
+                this.cardsCollection.closeAll();
+            }
+
+            card.open();
+
+            return this.cardsCollection.round();
+        }
+    }, {
+        key: "isFinish",
+        value: function isFinish() {
+            var closed = this.cardsCollection.getClosed();
+            return closed.length === 0;
+        }
+    }]);
+
+    return Game;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (Game);
+
+/***/ }),
+/* 52 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Card__ = __webpack_require__(53);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
+
+var CardsCollection = function () {
+    function CardsCollection(cards) {
+        _classCallCheck(this, CardsCollection);
+
+        this.cards = [];
+        for (var i in cards) {
+            this.cards.push(new __WEBPACK_IMPORTED_MODULE_0__Card__["a" /* default */](cards[i].id, cards[i].state, cards[i].value));
+        }
+    }
+
+    _createClass(CardsCollection, [{
+        key: 'getAll',
+        value: function getAll() {
+            return this.cards;
+        }
+    }, {
+        key: 'getOpened',
+        value: function getOpened() {
+            var cards = this.cards.filter(function (card) {
+                return card.isOpened();
+            });
+            return cards;
+        }
+    }, {
+        key: 'closeAll',
+        value: function closeAll() {
+            this.cards.filter(function (card) {
+                return card.isOpened();
+            }).forEach(function (card) {
+                return card.close();
+            });
+        }
+    }, {
+        key: 'round',
+        value: function round() {
+            var opened = this.getOpened();
+
+            if (opened.length == 1) {
+                return 0;
+            }
+
+            for (var i = 1; i < opened.length; i++) {
+                if (!opened[i].match(opened[0])) {
+                    return 1;
+                }
+            }
+
+            this.cards.filter(function (card) {
+                return card.isOpened();
+            }).forEach(function (card) {
+                return card.remove();
+            });
+            return 1;
+        }
+    }, {
+        key: 'getClosed',
+        value: function getClosed() {
+            var cards = this.cards.filter(function (card) {
+                return card.isClosed();
+            });
+            return cards;
+        }
+    }]);
+
+    return CardsCollection;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (CardsCollection);
+
+/***/ }),
+/* 53 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Card = function () {
+    function Card(id, state, value) {
+        _classCallCheck(this, Card);
+
+        this.id = id;
+        this.state = state;
+        this.value = value;
+    }
+
+    _createClass(Card, [{
+        key: "open",
+        value: function open() {
+            this.state = 1;
+        }
+    }, {
+        key: "close",
+        value: function close() {
+            this.state = 0;
+        }
+    }, {
+        key: "remove",
+        value: function remove() {
+            this.state = -1;
+        }
+    }, {
+        key: "isOpened",
+        value: function isOpened() {
+            return this.state === 1;
+        }
+    }, {
+        key: "isClosed",
+        value: function isClosed() {
+            return this.state === 0;
+        }
+    }, {
+        key: "isActive",
+        value: function isActive() {
+            return this.state !== -1;
+        }
+    }, {
+        key: "match",
+        value: function match(card) {
+            return this.value === card.value;
+        }
+    }]);
+
+    return Card;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (Card);
 
 /***/ })
 /******/ ]);

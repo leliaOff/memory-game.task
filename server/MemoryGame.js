@@ -2,6 +2,7 @@ class MemoryGame {
 
     constructor(n) {
         this.n = n;
+        this.count = n * n;
     }
 
     /**
@@ -12,18 +13,16 @@ class MemoryGame {
         let data = [];
         let values = this.createDataValues();
     
-        for(let i = 0; i < this.n; i++) {
-            data[i] = [];
-            for(let j = 0; j < this.n; j++) {
-    
-                let state = this.getState(i, j);
-                let value = state == -1 ? 0 : this.getValue(values);
-                
-                data[i][j] = {
-                    state: state,
-                    value: value
-                };
-            }
+        for(let i = 0; i < this.count; i++) {
+            
+            let state = this.getState(i);
+            let value = state == -1 ? 0 : this.getValue(values);
+            
+            data[i] = {
+                id: (i + 1),
+                state: state,
+                value: value
+            };
         }
     
         return data;
@@ -35,7 +34,7 @@ class MemoryGame {
     createDataValues() {
 
         let values = [];
-        let count = Math.floor(this.n * this.n / 2);
+        let count = Math.floor(this.count / 2);
 
         for(let i = 0; i < count; i++) {
             values[i] = 0;
@@ -74,15 +73,13 @@ class MemoryGame {
      * @param {*} j 
      * @param {*} n 
      */
-    getState(i, j) {
+    getState(i) {
 
         if(this.n % 2 == 0) {
             return 0;
         }
 
-        let middle = Math.floor(this.n / 2);
-
-        if(i != middle || j != middle) {
+        if(i != Math.floor(this.count / 2)) {
             return 0;
         }
 

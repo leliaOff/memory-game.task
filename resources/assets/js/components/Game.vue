@@ -8,14 +8,14 @@
             <button type="submit" class="btn btn-outline-light logout" @click="logout">Закончить</button>
         </div>
 
-        <div class="content">
+        <div class="content" v-if="game">
 
-            <button type="submit" class="btn btn-outline-light btn-block" v-if="left == 0" @click="getLevel">Следующий уровень</button>
+            <button type="submit" class="btn btn-outline-light btn-block" v-if="game.isFinish()" @click="getLevel">Следующий уровень</button>
             <div id="playing-field" v-else>
-                <div class="row" v-for="(row, i) in gameData" :key="i">
-                    <div v-bind:class="{ cell: true, active: cell.state != -1, open: cell.state == 1 }" v-for="(cell, j) in row" :key="j" :style="'width: ' + (100 / level) + '%'">
-                        <div :class="'item back-' + level" @click="openCard(cell)">
-                            <div :class="'card card-' + cell.value"></div>
+                <div class="row">
+                    <div v-bind:class="{ cell: true, active: card.isActive(), open: card.isOpened() }" v-for="(card, i) in game.getCards()" :key="card.id" :style="'width: ' + (100 / level) + '%'">
+                        <div :class="'item back-' + level" @click="clickCard(card)">
+                            <div :class="'card card-' + card.value"></div>
                         </div>
                     </div>
                 </div>
@@ -27,18 +27,21 @@
 
 <script>
 
+    import Game from '../domains/Game';
+    import CardsCollection from '../domains/CardsCollection';
+
     export default {
 
         props: ['username'],
 
         data() {
             return {
-                gameData    : [],   //данные игры
                 level       : 0,    //номер текущего уровня
                 opened      : [],   //список ссылок на открытые карточки
-                left        : -1,   //сколько ещё осталось открытых карточек
                 attempts    : 0,    //попытки
                 autoClose   : 0,    //состояние для автозакрытия карточек
+
+                game        : false
             }
         },
 
@@ -48,7 +51,11 @@
 
                 axios.get(`level`).then(response => {
                     
-                    this.start(response.data);
+                    this.game = new Game(new CardsCollection(response.data.game));
+                    let a = this.game.getCards();
+
+                    this.level      = response.data.level;
+                    this.attempts   = 0;
 
                 }).catch(error => {
                     // ...
@@ -56,62 +63,17 @@
 
             },
 
-            start(data) {
-                
-                if(data == '') {
-                    this.$emit('onLogout');
-                }
-                
-                this.gameData   = data;
-                this.level      = this.gameData.length;
-                this.left       = Math.floor(this.level * this.level / 2);
-                this.attempts   = 0;
-            },
+            clickCard(card) {
 
-            openCard(cell) {
-                
-                if(this.opened.length == 2) {
-                    this.setStateCards(0);
-                }
+                let result = this.game.selectCard(card);
+                this.attempts += result;
 
-                cell.state = 1;
-                this.opened.push(cell);
-
-                this.checkCards();
-
-            },
-
-            checkCards() {
-
-                if(this.opened.length < 2) {
-                    return;
-                }
-
-                this.attempts++;
-
-                if(this.opened[0].value != this.opened[1].value) {
-                    this.autoClose = setTimeout(() => { this.setStateCards(0) }, 500);
-                } else {
-                    this.setStateCards(-1);
-                    this.left--;
-                }
-
-                if(this.left == 0) {
+                if(this.game.isFinish()) {
                     this.finish();
                 }
 
             },
 
-            setStateCards(state) {
-
-                clearTimeout(this.autoClose);
-
-                for(let i in this.opened) {
-                    this.opened[i].state = state;
-                }
-                this.opened = [];
-
-            },
 
             finish() {
 
